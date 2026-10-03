@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#0000aa"/>
+  <rect x="56" y="56" width="400" height="400" fill="none" stroke="#ffffff" stroke-width="14"/>
+  <rect x="80" y="80" width="352" height="352" fill="none" stroke="#ffffff" stroke-width="14"/>
+  <rect x="80" y="136" width="352" height="70" fill="#00aaaa"/>
+  <text x="256" y="190" font-family="Courier New, monospace" font-weight="bold" font-size="64" text-anchor="middle" fill="#000000">RNG</text>
+  <text x="120" y="290" font-family="Courier New, monospace" font-weight="bold" font-size="54" fill="#ffff55">A_</text>
+  <rect x="120" y="330" width="34" height="56" fill="#aaaaaa"/>
+</svg>

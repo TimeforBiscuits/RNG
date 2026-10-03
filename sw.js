@@ -1,6 +1,7 @@
-// Offline support: cache the whole app on install, serve from cache first.
-// Bump VERSION whenever files change so clients pick up the update.
-var VERSION = "rng-v3";
+// Offline support. Online, every request goes to the network first (so a
+// merged change shows up on the next load) and the cache is refreshed;
+// offline, the cached copy is served. Bump VERSION when the file list changes.
+var VERSION = "rng-v4";
 var FILES = [
   "./",
   "index.html",
@@ -31,7 +32,10 @@ var FILES = [
 ];
 
 self.addEventListener("install", function (e) {
-  e.waitUntil(caches.open(VERSION).then(function (c) { return c.addAll(FILES); }));
+  e.waitUntil(caches.open(VERSION).then(function (c) {
+    // "reload" skips the browser's HTTP cache so the stored copy is current.
+    return c.addAll(FILES.map(function (f) { return new Request(f, { cache: "reload" }); }));
+  }));
   self.skipWaiting();
 });
 
@@ -45,9 +49,17 @@ self.addEventListener("activate", function (e) {
 
 self.addEventListener("fetch", function (e) {
   if (e.request.method !== "GET") return;
+  if (new URL(e.request.url).origin !== self.location.origin) return;
   e.respondWith(
-    caches.match(e.request, { ignoreSearch: true }).then(function (hit) {
-      return hit || fetch(e.request);
+    // "no-cache" asks the server whether the file changed (cheap when it hasn't).
+    fetch(e.request, { cache: "no-cache" }).then(function (res) {
+      if (res.ok) {
+        var copy = res.clone();
+        caches.open(VERSION).then(function (c) { c.put(e.request, copy); });
+      }
+      return res;
+    }).catch(function () {
+      return caches.match(e.request, { ignoreSearch: true });
     })
   );
 });

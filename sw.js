@@ -1,6 +1,6 @@
 // Offline support: cache the whole app on install, serve from cache first.
 // Bump VERSION whenever files change so clients pick up the update.
-var VERSION = "rng-v1";
+var VERSION = "rng-v2";
 var FILES = [
   "./",
   "index.html",
@@ -16,6 +16,12 @@ var FILES = [
   "data/turkish.js",
   "data/arabic.js",
   "data/indian.js",
+  "data/japanese.js",
+  "data/korean.js",
+  "data/german.js",
+  "data/french.js",
+  "data/norwegian.js",
+  "data/latvian.js",
   "fonts/VT323.woff2",
   "manifest.webmanifest",
   "icons/icon.svg",

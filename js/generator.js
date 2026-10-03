@@ -25,6 +25,12 @@
       if (/is$/.test(s)) return s.replace(/is$/, "i"); // Papadakis > Papadaki
       if (/as$/.test(s)) return s.replace(/as$/, "a"); // Pappas > Pappa
       return s;
+    },
+    latvian: function (s) {
+      if (/ons$/.test(s)) return s.replace(/ons$/, "one"); // Jansons > Jansone
+      if (/is$/.test(s)) return s.replace(/is$/, "e"); // Balodis > Balode
+      if (/s$/.test(s)) return s.replace(/s$/, "a"); // Berzins > Berzina
+      return s; // Liepa, Skuja do not change
     }
   };
 

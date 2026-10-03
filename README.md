@@ -4,7 +4,8 @@ Generates random first and last names by country of origin, styled like an
 early-90s DOS program.
 
 Nationalities: American, Russian, Serbian, Greek, Ukrainian, Chinese,
-Turkish, Arabic, Indian.
+Turkish, Arabic, Indian, Japanese, Korean, German, French, Norwegian,
+Latvian.
 
 All names are shown in the Latin alphabet as **plain ASCII**. There are no
 accents, so every name can be typed on any keyboard.
@@ -27,12 +28,12 @@ Once it's hosted over HTTPS, it works offline and can be installed as an app:
 
 | Key | Action |
 |---|---|
-| `1`-`9`, `0` | Pick a nationality (`0` = random) |
+| `1`-`15`, `0` | Pick a nationality (`0` = random). For 10-15, type both digits quickly. |
 | `Up` / `Down` | Move through nationalities |
 | `Enter` / `G` | Generate |
 | `M` / `F` / `A` | Male / Female / Any |
 | `+` / `-` | More / fewer names (1, 5, 10, 25) |
-| `W` | Chinese name order (family name first by default) |
+| `W` | Chinese/Japanese/Korean name order (family name first by default) |
 | `C` | Clear output |
 | `R` | CRT effect on/off |
 | `H` / `?` | Help |
@@ -52,6 +53,12 @@ names, female first names and surnames.
 | Serbian | Serbian Latin simplified to ASCII (Djordjevic, Milos) |
 | Greek | ELOT 743 / UN standard, no accent marks |
 | Chinese | Hanyu Pinyin without tone marks |
+| Japanese | Hepburn without long-vowel marks (Sato, Ito) |
+| Korean | Revised Romanization for given names (Min-jun); customary surname spellings (Kim, Lee, Park) |
+| German | Umlauts as ae/oe/ue, eszett as ss (Mueller, Gross) |
+| French | Accents dropped (Helene, Francois) |
+| Norwegian | Simplified to ASCII (Bjorn, Hakon, Saether) |
+| Latvian | Diacritics dropped (Berzins, Janis) |
 | Turkish | Turkish Latin simplified to ASCII (Yilmaz, Celik) |
 | Arabic, Indian | Common English spellings |
 
@@ -62,12 +69,15 @@ names, female first names and surnames.
 - **Ukrainian:** Kovalskyi becomes Kovalska. Shevchenko is unchanged.
 - **Greek:** Papadopoulos becomes Papadopoulou, Papadakis becomes Papadaki.
   Georgiou is unchanged.
+- **Latvian:** Berzins becomes Berzina, Balodis becomes Balode, Jansons
+  becomes Jansone. Liepa is unchanged.
 
 **Adding a nationality:**
 
-1. Copy one of the data files.
+1. Copy one of the data files and give it a unique `id` and three-letter `code`.
 2. Add a `<script>` tag for it in `index.html` and an entry in `sw.js`.
-3. Run `npm test`.
+   Bump `VERSION` in `sw.js` so installed copies update.
+3. Update the expected count in `test/check.js`, then run `npm test`.
 
 ## Tests
 

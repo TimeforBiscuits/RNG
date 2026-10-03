@@ -155,9 +155,13 @@ kbd { font-family: inherit; }
 
 /* ---------- Origin list ---------- */
 
+/* Two columns, numbered top-to-bottom: 1-8 on the left, 9-15 and RANDOM on the right. */
 .origin-list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(8, auto);
+  grid-auto-flow: column;
+  column-gap: 6px;
 }
 .origin {
   display: flex;
@@ -170,18 +174,17 @@ kbd { font-family: inherit; }
   text-align: left;
   color: var(--gray);
 }
-.origin .key { color: var(--yellow); width: 1ch; }
+.origin .key { color: var(--yellow); width: 2ch; text-align: right; }
 .origin .name { flex: 1; letter-spacing: 0.04em; }
-.origin .meta { color: var(--dgray); font-size: 0.85em; }
+.origin .meta { display: none; }
 .origin:hover { color: var(--white); }
 .origin[aria-checked="true"] {
   background: var(--cyan);
   color: var(--black);
 }
 .origin[aria-checked="true"] .key { color: var(--white); }
-.origin[aria-checked="true"] .meta { color: var(--blue); }
 .origin:focus-visible { outline: 2px dashed var(--yellow); outline-offset: -2px; }
-.origin.random { margin-top: 6px; border-top: 1px dashed var(--dgray); padding-top: 5px; }
+.origin.random { color: var(--lcyan); }
 
 /* ---------- Radios / checkboxes ---------- */
 
@@ -446,12 +449,6 @@ body.crt { text-shadow: 0 0 2px currentColor; }
 @media (max-width: 860px) {
   :root { --fs: 20px; }
   .layout { grid-template-columns: 1fr; }
-  .origin-list {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-  .origin.random { grid-column: 1 / -1; }
-  .origin .meta { display: none; }
   .output-panel { height: auto; min-height: 260px; }
 }
 

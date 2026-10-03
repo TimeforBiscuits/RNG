@@ -29,7 +29,7 @@ function check(cond, msg) {
   if (!cond) { failures++; console.error("FAIL: " + msg); }
 }
 
-check(NATIONS.length === 9, "expected 9 nationalities, got " + NATIONS.length);
+check(NATIONS.length === 15, "expected 15 nationalities, got " + NATIONS.length);
 check(dataFiles.length === fs.readdirSync(path.join(root, "data")).length,
   "every file in data/ must be listed in index.html");
 
@@ -69,7 +69,11 @@ var cases = [
   ["ukrainian", "Shevchenko", "Shevchenko"], ["ukrainian", "Kovalchuk", "Kovalchuk"],
   ["greek", "Papadopoulos", "Papadopoulou"], ["greek", "Papadakis", "Papadaki"],
   ["greek", "Pappas", "Pappa"], ["greek", "Georgiou", "Georgiou"],
-  ["serbian", "Jovanovic", "Jovanovic"], ["turkish", "Yilmaz", "Yilmaz"]
+  ["latvian", "Berzins", "Berzina"], ["latvian", "Jansons", "Jansone"],
+  ["latvian", "Balodis", "Balode"], ["latvian", "Kalejs", "Kaleja"],
+  ["latvian", "Ozols", "Ozola"], ["latvian", "Liepa", "Liepa"],
+  ["serbian", "Jovanovic", "Jovanovic"], ["turkish", "Yilmaz", "Yilmaz"],
+  ["german", "Mueller", "Mueller"], ["norwegian", "Hansen", "Hansen"]
 ];
 cases.forEach(function (c) {
   var got = RNG.surnameFor(nat(c[0]), c[1], "female");
@@ -88,11 +92,14 @@ NATIONS.forEach(function (n) {
     });
   });
 });
-var zh = nat("chinese");
-var a = RNG.generateOne(zh, {});
-check(a.full === a.last + " " + a.first, "Chinese should default to family name first");
-var b = RNG.generateOne(zh, { westernOrder: true });
-check(b.full === b.first + " " + b.last, "Chinese western order should put given name first");
+["chinese", "japanese", "korean"].forEach(function (id) {
+  var a = RNG.generateOne(nat(id), {});
+  check(a.full === a.last + " " + a.first, id + " should default to family name first");
+  var b = RNG.generateOne(nat(id), { westernOrder: true });
+  check(b.full === b.first + " " + b.last, id + " western order should put given name first");
+});
+var us = RNG.generateOne(nat("american"), {});
+check(us.full === us.first + " " + us.last, "american should be given name first");
 
 // Print a sample for eyeballing.
 NATIONS.forEach(function (n) {

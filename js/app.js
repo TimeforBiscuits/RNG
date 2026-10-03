@@ -144,6 +144,25 @@
     if (active && originsEl.contains(document.activeElement)) active.focus();
   }
 
+  // Number keys pick a nationality. Items 10+ take two digits typed in quick
+  // succession: "1" selects #1 at once, and a second digit within the
+  // window upgrades it to #10-#19.
+  var lastDigit = null;
+  var lastDigitAt = 0;
+  function pickByDigit(d) {
+    var now = Date.now();
+    var idx = d;
+    if (lastDigit !== null && now - lastDigitAt < 800 && NATIONS[lastDigit * 10 + d - 1]) {
+      idx = lastDigit * 10 + d;
+      lastDigit = null;
+    } else {
+      lastDigit = d;
+      lastDigitAt = now;
+    }
+    if (idx === 0) setOrigin("random");
+    else if (NATIONS[idx - 1]) setOrigin(NATIONS[idx - 1].id);
+  }
+
   function setGender(g) {
     state.gender = g;
     savePrefs();
@@ -227,7 +246,7 @@
     state.westernOrder = !state.westernOrder;
     savePrefs();
     renderOptions();
-    status(state.westernOrder ? "CHINESE: GIVEN NAME FIRST" : "CHINESE: FAMILY NAME FIRST");
+    status(state.westernOrder ? "EAST ASIAN: GIVEN NAME FIRST" : "EAST ASIAN: FAMILY NAME FIRST");
   }
 
   var lastFocus = null;
@@ -314,10 +333,8 @@
     if (fkeys[k]) { e.preventDefault(); fkeys[k](); return; }
 
     if (/^[0-9]$/.test(k)) {
-      var idx = Number(k);
-      if (idx === 0) setOrigin("random");
-      else if (NATIONS[idx - 1]) setOrigin(NATIONS[idx - 1].id);
       e.preventDefault();
+      pickByDigit(Number(k));
       return;
     }
 

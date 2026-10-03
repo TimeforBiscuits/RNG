@@ -29,7 +29,7 @@ function check(cond, msg) {
   if (!cond) { failures++; console.error("FAIL: " + msg); }
 }
 
-check(NATIONS.length === 9, "expected 9 nationalities, got " + NATIONS.length);
+check(NATIONS.length === 15, "expected 15 nationalities, got " + NATIONS.length);
 check(dataFiles.length === fs.readdirSync(path.join(root, "data")).length,
   "every file in data/ must be listed in index.html");
 
@@ -43,10 +43,16 @@ dataFiles.forEach(function (f) {
   check(swFiles.indexOf(f) >= 0, "sw.js does not cache " + f);
 });
 
+// Every list should offer at least 200 names. Korean has few surnames in
+// real use, so its surname list has a lower floor (and is weighted).
+var MIN_NAMES = 200;
+var MIN_EXCEPTIONS = { "korean.surnames": 100 };
+
 var ASCII_NAME = /^[A-Za-z][A-Za-z' -]*[a-z]$/;
 NATIONS.forEach(function (n) {
   ["male", "female", "surnames"].forEach(function (list) {
-    check(Array.isArray(n[list]) && n[list].length >= 40, n.id + "." + list + " should have at least 40 names");
+    var min = MIN_EXCEPTIONS[n.id + "." + list] || MIN_NAMES;
+    check(Array.isArray(n[list]) && n[list].length >= min, n.id + "." + list + " has " + n[list].length + " names, needs at least " + min);
     var seen = {};
     n[list].forEach(function (name) {
       check(ASCII_NAME.test(name), n.id + "." + list + ": not plain ASCII: " + JSON.stringify(name));
@@ -69,7 +75,12 @@ var cases = [
   ["ukrainian", "Shevchenko", "Shevchenko"], ["ukrainian", "Kovalchuk", "Kovalchuk"],
   ["greek", "Papadopoulos", "Papadopoulou"], ["greek", "Papadakis", "Papadaki"],
   ["greek", "Pappas", "Pappa"], ["greek", "Georgiou", "Georgiou"],
-  ["serbian", "Jovanovic", "Jovanovic"], ["turkish", "Yilmaz", "Yilmaz"]
+  ["latvian", "Berzins", "Berzina"], ["latvian", "Jansons", "Jansone"],
+  ["latvian", "Balodis", "Balode"], ["latvian", "Kalejs", "Kaleja"],
+  ["latvian", "Ozols", "Ozola"], ["latvian", "Liepa", "Liepa"],
+  ["latvian", "Dombrovskis", "Dombrovska"],
+  ["serbian", "Jovanovic", "Jovanovic"], ["turkish", "Yilmaz", "Yilmaz"],
+  ["german", "Mueller", "Mueller"], ["norwegian", "Hansen", "Hansen"]
 ];
 cases.forEach(function (c) {
   var got = RNG.surnameFor(nat(c[0]), c[1], "female");
@@ -88,11 +99,31 @@ NATIONS.forEach(function (n) {
     });
   });
 });
-var zh = nat("chinese");
-var a = RNG.generateOne(zh, {});
-check(a.full === a.last + " " + a.first, "Chinese should default to family name first");
-var b = RNG.generateOne(zh, { westernOrder: true });
-check(b.full === b.first + " " + b.last, "Chinese western order should put given name first");
+["chinese", "korean"].forEach(function (id) {
+  var a = RNG.generateOne(nat(id), {});
+  check(a.full === a.last + " " + a.first, id + " should default to family name first");
+  var b = RNG.generateOne(nat(id), { westernOrder: true });
+  check(b.full === b.first + " " + b.last, id + " western order should put given name first");
+});
+["american", "japanese"].forEach(function (id) {
+  var x = RNG.generateOne(nat(id), {});
+  check(x.full === x.first + " " + x.last, id + " should be given name first");
+});
+
+// Ukrainian: surnames ending in -nko must stay at 50% or less.
+var ukr = nat("ukrainian").surnames;
+var nko = ukr.filter(function (s) { return /nko$/.test(s); }).length;
+check(nko / ukr.length <= 0.5, "ukrainian -nko surnames are " + Math.round(100 * nko / ukr.length) + "%, must be 50% or less");
+
+// Weighted surnames: the most common one should come up far more often
+// than an average one, but rare ones must still appear.
+var ko = nat("korean"), counts = {};
+for (var i = 0; i < 20000; i++) {
+  var s = RNG.generateOne(ko, { gender: "male" }).last;
+  counts[s] = (counts[s] || 0) + 1;
+}
+check(counts.Kim / 20000 > 0.12 && counts.Kim / 20000 < 0.3, "Kim share should be roughly 20%, got " + (counts.Kim / 200).toFixed(1) + "%");
+check(Object.keys(counts).length > 80, "weighted Korean surnames should still reach most of the list");
 
 // Print a sample for eyeballing.
 NATIONS.forEach(function (n) {

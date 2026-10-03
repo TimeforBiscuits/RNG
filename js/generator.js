@@ -25,6 +25,13 @@
       if (/is$/.test(s)) return s.replace(/is$/, "i"); // Papadakis > Papadaki
       if (/as$/.test(s)) return s.replace(/as$/, "a"); // Pappas > Pappa
       return s;
+    },
+    latvian: function (s) {
+      if (/skis$/.test(s)) return s.replace(/skis$/, "ska"); // Dombrovskis > Dombrovska
+      if (/ons$/.test(s)) return s.replace(/ons$/, "one"); // Jansons > Jansone
+      if (/is$/.test(s)) return s.replace(/is$/, "e"); // Balodis > Balode
+      if (/s$/.test(s)) return s.replace(/s$/, "a"); // Berzins > Berzina
+      return s; // Liepa, Skuja do not change
     }
   };
 
@@ -44,6 +51,15 @@
     return list[randomInt(list.length)];
   }
 
+  // Picks from a list ordered most-common-first, favouring the top.
+  // bias 1 is uniform; higher values lean harder toward the start, so a few
+  // very common surnames (Kim, Wang) come up about as often as in real life.
+  function pickWeighted(list, bias) {
+    if (!bias || bias <= 1) return pick(list);
+    var u = randomInt(0x40000000) / 0x40000000;
+    return list[Math.floor(list.length * Math.pow(u, bias))];
+  }
+
   function surnameFor(nat, surname, gender) {
     var rule = FEMININE_RULES[nat.id];
     return gender === "female" && rule ? rule(surname) : surname;
@@ -57,7 +73,7 @@
       gender = randomInt(2) === 0 ? "male" : "female";
     }
     var first = pick(nat[gender]);
-    var last = surnameFor(nat, pick(nat.surnames), gender);
+    var last = surnameFor(nat, pickWeighted(nat.surnames, nat.surnameBias), gender);
     var familyFirst = nat.familyFirst && !options.westernOrder;
     return {
       first: first,

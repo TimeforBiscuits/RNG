@@ -33,7 +33,7 @@ Once it's hosted over HTTPS, it works offline and can be installed as an app:
 | `Enter` / `G` | Generate |
 | `M` / `F` / `A` | Male / Female / Any |
 | `+` / `-` | More / fewer names (1, 5, 10, 25) |
-| `W` | Chinese/Japanese/Korean name order (family name first by default) |
+| `W` | Chinese/Korean name order (family name first by default) |
 | `C` | Clear output |
 | `R` | CRT effect on/off |
 | `H` / `?` | Help |
@@ -70,7 +70,19 @@ names, female first names and surnames.
 - **Greek:** Papadopoulos becomes Papadopoulou, Papadakis becomes Papadaki.
   Georgiou is unchanged.
 - **Latvian:** Berzins becomes Berzina, Balodis becomes Balode, Jansons
-  becomes Jansone. Liepa is unchanged.
+  becomes Jansone, Dombrovskis becomes Dombrovska. Liepa is unchanged.
+
+**List sizes:** every first-name and surname list has at least 200 names,
+about 11,000 in total. The one exception is Korean surnames. Korea has
+relatively few surnames, and a handful (Kim, Lee, Park) cover nearly half the
+population, so that list has about 100.
+
+**Weighted surnames:** Korean and Chinese surname lists are ordered most
+common first, and `surnameBias` makes picks lean toward the top. Kim comes up
+about 20% of the time, as in real life, while rarer surnames still appear.
+
+**Name order:** Chinese and Korean names are shown family name first by
+default. All others, including Japanese, are shown given name first.
 
 **Adding a nationality:**
 

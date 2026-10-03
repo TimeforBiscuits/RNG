@@ -246,7 +246,7 @@
     state.westernOrder = !state.westernOrder;
     savePrefs();
     renderOptions();
-    status(state.westernOrder ? "EAST ASIAN: GIVEN NAME FIRST" : "EAST ASIAN: FAMILY NAME FIRST");
+    status(state.westernOrder ? "CHINESE/KOREAN: GIVEN NAME FIRST" : "CHINESE/KOREAN: FAMILY NAME FIRST");
   }
 
   var lastFocus = null;

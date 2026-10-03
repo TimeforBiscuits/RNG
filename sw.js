@@ -1,6 +1,6 @@
 // Offline support: cache the whole app on install, serve from cache first.
 // Bump VERSION whenever files change so clients pick up the update.
-var VERSION = "rng-v2";
+var VERSION = "rng-v3";
 var FILES = [
   "./",
   "index.html",

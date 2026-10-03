@@ -443,7 +443,17 @@
   setInterval(tick, 1000);
   boot(function () { $("generate").focus({ preventScroll: true }); });
 
-  if ("serviceWorker" in navigator && location.protocol === "https:") {
-    navigator.serviceWorker.register("sw.js").catch(function () { /* offline support is optional */ });
+  if ("serviceWorker" in navigator && window.isSecureContext) {
+    // When an updated service worker takes over an already-open page, reload
+    // once so the page runs the new code. Skipped on the very first install.
+    var hadController = !!navigator.serviceWorker.controller;
+    var reloaded = false;
+    navigator.serviceWorker.addEventListener("controllerchange", function () {
+      if (!hadController || reloaded) return;
+      reloaded = true;
+      location.reload();
+    });
+    navigator.serviceWorker.register("sw.js", { updateViaCache: "none" })
+      .catch(function () { /* offline support is optional */ });
   }
 })();

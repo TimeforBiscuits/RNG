@@ -27,6 +27,7 @@ The owner is new to Claude Code. Explain changes in plain language.
   - Norwegian: o for o-slash, a for a-ring.
   - Japanese: no macrons.
   - Chinese: Pinyin without tones.
+  - Bulgarian: the official Streamlined System (zh, ts, sht, a for the hard sign).
 - Every non-Latin script is romanized with one consistent standard. Record
   that standard in the file's `romanization` field and in the README table.
 - Each list holds at least 200 realistic names, with no duplicates. The one
@@ -38,7 +39,8 @@ The owner is new to Claude Code. Explain changes in plain language.
 - Korean and Chinese surnames are listed most common first and weighted
   (`surnameBias`). Keep new common surnames near the top of those lists.
 - Store surnames in the masculine form. Languages with gendered surnames
-  (Russian, Ukrainian, Greek, Latvian) get a rule in `FEMININE_RULES`, plus
+  (Russian, Ukrainian, Greek, Latvian, Bulgarian) get a rule in
+  `FEMININE_RULES`, plus
   test cases in `test/check.js`.
 - Chinese and Korean set `familyFirst: true`. Japanese is shown given name
   first, as the owner asked.

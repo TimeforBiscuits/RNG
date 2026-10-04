@@ -29,7 +29,7 @@ function check(cond, msg) {
   if (!cond) { failures++; console.error("FAIL: " + msg); }
 }
 
-check(NATIONS.length === 15, "expected 15 nationalities, got " + NATIONS.length);
+check(NATIONS.length === 16, "expected 16 nationalities, got " + NATIONS.length);
 check(dataFiles.length === fs.readdirSync(path.join(root, "data")).length,
   "every file in data/ must be listed in index.html");
 
@@ -79,6 +79,8 @@ var cases = [
   ["latvian", "Balodis", "Balode"], ["latvian", "Kalejs", "Kaleja"],
   ["latvian", "Ozols", "Ozola"], ["latvian", "Liepa", "Liepa"],
   ["latvian", "Dombrovskis", "Dombrovska"],
+  ["bulgarian", "Ivanov", "Ivanova"], ["bulgarian", "Georgiev", "Georgieva"],
+  ["bulgarian", "Petrovski", "Petrovska"], ["bulgarian", "Kostadinov", "Kostadinova"],
   ["serbian", "Jovanovic", "Jovanovic"], ["turkish", "Yilmaz", "Yilmaz"],
   ["german", "Mueller", "Mueller"], ["norwegian", "Hansen", "Hansen"]
 ];

@@ -26,6 +26,11 @@
       if (/as$/.test(s)) return s.replace(/as$/, "a"); // Pappas > Pappa
       return s;
     },
+    bulgarian: function (s) {
+      if (/ski$/.test(s)) return s.replace(/ski$/, "ska"); // Petrovski > Petrovska
+      if (/(ov|ev|in)$/.test(s)) return s + "a"; // Ivanov > Ivanova
+      return s; // others do not change
+    },
     latvian: function (s) {
       if (/skis$/.test(s)) return s.replace(/skis$/, "ska"); // Dombrovskis > Dombrovska
       if (/ons$/.test(s)) return s.replace(/ons$/, "one"); // Jansons > Jansone

@@ -1,7 +1,7 @@
 // Offline support. Online, every request goes to the network first (so a
 // merged change shows up on the next load) and the cache is refreshed;
 // offline, the cached copy is served. Bump VERSION when the file list changes.
-var VERSION = "rng-v4";
+var VERSION = "rng-v5";
 var FILES = [
   "./",
   "index.html",
@@ -23,6 +23,7 @@ var FILES = [
   "data/french.js",
   "data/norwegian.js",
   "data/latvian.js",
+  "data/bulgarian.js",
   "fonts/VT323.woff2",
   "manifest.webmanifest",
   "icons/icon.svg",

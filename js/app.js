@@ -16,7 +16,7 @@
   var westernEl = $("western-order");
 
   var state = {
-    origin: "random",
+    origin: "american",
     gender: "any",
     count: 5,
     westernOrder: false,
@@ -33,7 +33,9 @@
         if (k in saved) state[k] = saved[k];
       });
     } catch (e) { /* storage unavailable: use defaults */ }
-    if (state.origin !== "random" && !findNation(state.origin)) state.origin = "random";
+    // Fall back to the first nationality if the saved one no longer exists
+    // (e.g. the old RANDOM option).
+    if (!findNation(state.origin)) state.origin = NATIONS[0].id;
     if (COUNTS.indexOf(state.count) < 0) state.count = 5;
   }
 
@@ -52,12 +54,11 @@
     var items = NATIONS.map(function (n, i) {
       return { id: n.id, key: String(i + 1), label: n.label, meta: n.code };
     });
-    items.push({ id: "random", key: "0", label: "* RANDOM *", meta: "ALL" });
 
     items.forEach(function (item) {
       var b = document.createElement("button");
       b.type = "button";
-      b.className = "origin" + (item.id === "random" ? " random" : "");
+      b.className = "origin";
       b.setAttribute("role", "radio");
       b.dataset.id = item.id;
       b.innerHTML =
@@ -76,9 +77,7 @@
       b.tabIndex = on ? 0 : -1;
     });
     var n = findNation(state.origin);
-    infoEl.innerHTML = n
-      ? "SCRIPT: <b>" + n.script + "</b> &middot; ROMANIZATION: <b>" + n.romanization + "</b>"
-      : "SOURCE: <b>all " + NATIONS.length + " nationalities</b>";
+    infoEl.innerHTML = "SCRIPT: <b>" + n.script + "</b> &middot; ROMANIZATION: <b>" + n.romanization + "</b>";
   }
 
   function renderOptions() {
@@ -133,11 +132,11 @@
     state.origin = id;
     savePrefs();
     renderOrigins();
-    status(id === "random" ? "ORIGIN: RANDOM" : "ORIGIN: " + findNation(id).label.toUpperCase());
+    status("ORIGIN: " + findNation(id).label.toUpperCase());
   }
 
   function moveOrigin(delta) {
-    var ids = NATIONS.map(function (n) { return n.id; }).concat("random");
+    var ids = NATIONS.map(function (n) { return n.id; });
     var i = ids.indexOf(state.origin);
     setOrigin(ids[(i + delta + ids.length) % ids.length]);
     var active = originsEl.querySelector('[aria-checked="true"]');
@@ -159,8 +158,7 @@
       lastDigit = d;
       lastDigitAt = now;
     }
-    if (idx === 0) setOrigin("random");
-    else if (NATIONS[idx - 1]) setOrigin(NATIONS[idx - 1].id);
+    if (NATIONS[idx - 1]) setOrigin(NATIONS[idx - 1].id);
   }
 
   function setGender(g) {
@@ -179,8 +177,7 @@
   }
 
   function generate() {
-    var pool = state.origin === "random" ? NATIONS : [findNation(state.origin)];
-    var names = RNG.generate(pool, state.count, {
+    var names = RNG.generate([findNation(state.origin)], state.count, {
       gender: state.gender,
       westernOrder: state.westernOrder
     });

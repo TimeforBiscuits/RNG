@@ -5,7 +5,7 @@ early-90s DOS program.
 
 Nationalities: American, Russian, Serbian, Greek, Ukrainian, Chinese,
 Turkish, Arabic, Indian, Japanese, Korean, German, French, Norwegian,
-Latvian.
+Latvian, Bulgarian.
 
 All names are shown in the Latin alphabet as **plain ASCII**. There are no
 accents, so every name can be typed on any keyboard.
@@ -28,7 +28,7 @@ Once it's hosted over HTTPS, it works offline and can be installed as an app:
 
 | Key | Action |
 |---|---|
-| `1`-`15`, `0` | Pick a nationality (`0` = random). For 10-15, type both digits quickly. |
+| `1`-`16` | Pick a nationality. For 10-16, type both digits quickly. |
 | `Up` / `Down` | Move through nationalities |
 | `Enter` / `G` | Generate |
 | `M` / `F` / `A` | Male / Female / Any |
@@ -59,6 +59,7 @@ names, female first names and surnames.
 | French | Accents dropped (Helene, Francois) |
 | Norwegian | Simplified to ASCII (Bjorn, Hakon, Saether) |
 | Latvian | Diacritics dropped (Berzins, Janis) |
+| Bulgarian | Official Streamlined System, 2009 (Petar, Zhivko, Tsvetan) |
 | Turkish | Turkish Latin simplified to ASCII (Yilmaz, Celik) |
 | Arabic, Indian | Common English spellings |
 
@@ -71,6 +72,8 @@ names, female first names and surnames.
   Georgiou is unchanged.
 - **Latvian:** Berzins becomes Berzina, Balodis becomes Balode, Jansons
   becomes Jansone, Dombrovskis becomes Dombrovska. Liepa is unchanged.
+- **Bulgarian:** Ivanov becomes Ivanova, Georgiev becomes Georgieva,
+  Zagorski becomes Zagorska.
 
 **List sizes:** every first-name and surname list has at least 200 names,
 about 11,000 in total. The one exception is Korean surnames. Korea has

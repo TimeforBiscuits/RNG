@@ -155,7 +155,7 @@ kbd { font-family: inherit; }
 
 /* ---------- Origin list ---------- */
 
-/* Two columns, numbered top-to-bottom: 1-8 on the left, 9-15 and RANDOM on the right. */
+/* Two columns, numbered top-to-bottom: 1-8 on the left, 9-16 on the right. */
 .origin-list {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -184,7 +184,6 @@ kbd { font-family: inherit; }
 }
 .origin[aria-checked="true"] .key { color: var(--white); }
 .origin:focus-visible { outline: 2px dashed var(--yellow); outline-offset: -2px; }
-.origin.random { color: var(--lcyan); }
 
 /* ---------- Radios / checkboxes ---------- */
 
@@ -203,6 +202,8 @@ kbd { font-family: inherit; }
   cursor: pointer;
   white-space: nowrap;
 }
+.check { white-space: normal; align-items: flex-start; } /* long labels may wrap on phones */
+.check .mark { white-space: pre; }
 .radio input, .check input {
   position: absolute;
   opacity: 0;
